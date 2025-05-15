@@ -11,25 +11,44 @@
     body {
       margin: 0;
       padding: 0;
-      height: 100vh;
+      min-height: 100vh;
       background: linear-gradient(to bottom right, #dfe9f3, #ffffff);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
+      transition: background 0.3s, color 0.3s;
     }
-    header {
+    body.dark {
+      background: #121212;
+      color: #f0f0f0;
+    }
+    header, footer {
       background: #4a90e2;
       color: white;
       padding: 20px;
       text-align: center;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
-      letter-spacing: 1px;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    footer {
+      font-size: 14px;
+    }
+    .toggle-dark {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
     }
     .container {
       display: flex;
       flex: 1;
+      flex-wrap: wrap;
     }
     .calculator-section {
       flex: 1;
@@ -38,6 +57,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-width: 300px;
     }
     .calculator {
       background: #ffffff;
@@ -49,6 +69,11 @@
       gap: 20px;
       width: 100%;
       max-width: 700px;
+      transition: background 0.3s;
+    }
+    body.dark .calculator {
+      background: #1e1e1e;
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
     }
     .result {
       grid-column: span 2;
@@ -62,6 +87,22 @@
       padding: 10px;
       border: 2px solid #ccc;
       border-radius: 10px;
+      background: transparent;
+      color: inherit;
+    }
+    .history {
+      grid-column: span 2;
+      max-height: 100px;
+      overflow-y: auto;
+      font-size: 14px;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    body.dark .history {
+      background: #2a2a2a;
+      color: #f0f0f0;
     }
     .numbers {
       display: grid;
@@ -102,6 +143,7 @@
       justify-content: center;
       background: #f7f9fc;
       border-left: 2px solid #ccc;
+      min-width: 250px;
     }
     .formula {
       background: #fff;
@@ -112,16 +154,29 @@
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
-    footer {
-      background: #4a90e2;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      font-size: 14px;
+    body.dark .formulas-section {
+      background: #1a1a1a;
+    }
+    body.dark .formula {
+      background: #2b2b2b;
+      color: #f0f0f0;
+      border-left-color: #90caf9;
+    }
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .calculator {
+        grid-template-columns: 1fr;
+      }
+      .operators {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
   </style>
 </head>
 <body>
+  <div class="toggle-dark" onclick="toggleDarkMode()">🌓 Toggle Theme</div>
   <header>ShubhFusion Calculator by Shubham Sapkal</header>
   <div class="container">
     <div class="calculator-section">
@@ -129,6 +184,7 @@
         <div class="result">
           <input type="text" id="result" readonly />
         </div>
+        <div class="history" id="history"></div>
         <div class="numbers">
           <input type="button" value="7" onclick="add('7')">
           <input type="button" value="8" onclick="add('8')">
@@ -162,12 +218,10 @@
       <div class="formula">x = (-b ± √Δ)/2a</div>
     </div>
   </div>
-  <footer>
-    © 2025 ShubhFusion | Designed by Shubham Sapkal
-  </footer>
-
+  <footer>© 2025 ShubhFusion | Designed by Shubham Sapkal</footer>
   <script>
     const result = document.getElementById("result");
+    const history = document.getElementById("history");
 
     function add(value) {
       result.value += value;
@@ -175,7 +229,10 @@
 
     function calculate() {
       try {
-        result.value = eval(result.value.replace(/×/g, '*').replace(/÷/g, '/'));
+        const expression = result.value.replace(/×/g, '*').replace(/÷/g, '/');
+        const output = eval(expression);
+        history.innerHTML += `<div>${result.value} = ${output}</div>`;
+        result.value = output;
       } catch {
         result.value = "Error";
       }
@@ -187,6 +244,10 @@
 
     function backspace() {
       result.value = result.value.slice(0, -1);
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
     }
   </script>
 </body>
