@@ -1,131 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ShubhFusion Calculator</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      background: linear-gradient(to right, #f0f4ff, #d9e4ff);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .calculator {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 30px 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      width: 280px;
-      text-align: center;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      color: #333;
-      font-size: 22px;
-    }
-
-    #result {
-      width: 100%;
-      height: 50px;
-      font-size: 24px;
-      margin-bottom: 20px;
-      padding: 10px;
-      text-align: right;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .buttons input[type="button"] {
-      width: 60px;
-      height: 60px;
-      margin: 8px 6px;
-      font-size: 20px;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background-color: #f1f3f4;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .buttons input[type="button"]:hover {
-      background-color: #dde1e4;
-      transform: scale(1.05);
-    }
-
-    .buttons input[value="="] {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .buttons input[value="="]:hover {
-      background-color: #45a049;
-    }
-
-    .buttons input[value="C"] {
-      background-color: #f44336;
-      color: white;
-    }
-
-    .buttons input[value="C"]:hover {
-      background-color: #e53935;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ShubhFusion Calculator Pro</title>
+<style>
+  :root {
+    --bg-light: #f0f4ff;
+    --bg-dark: #121212;
+    --calc-bg-light: #fff;
+    --calc-bg-dark: #1e1e1e;
+    --text-light: #333;
+    --text-dark: #eee;
+    --btn-light: #f1f3f4;
+    --btn-dark: #333;
+    --btn-hover-light: #dde1e4;
+    --btn-hover-dark: #444;
+    --green: #4caf50;
+    --green-hover: #45a049;
+    --red: #f44336;
+    --red-hover: #e53935;
+  }
+  body {
+    background: var(--bg-light);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.dark {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  .calculator {
+    background: var(--calc-bg-light);
+    border-radius: 16px;
+    padding: 30px 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 340px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 15px;
+    transition: background 0.3s;
+  }
+  body.dark .calculator {
+    background: var(--calc-bg-dark);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+  }
+  h1 {
+    grid-column: span 2;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  #result {
+    grid-column: span 2;
+    width: 100%;
+    height: 50px;
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: right;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    user-select: none;
+    background: transparent;
+    color: inherit;
+    transition: border-color 0.3s;
+  }
+  body.dark #result {
+    border-color: #555;
+  }
+  .numbers, .operators {
+    display: grid;
+    gap: 12px;
+  }
+  .numbers {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .operators {
+    grid-template-columns: 1fr;
+  }
+  input[type="button"] {
+    width: 100%;
+    height: 60px;
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: var(--btn-light);
+    color: var(--text-light);
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+    user-select: none;
+  }
+  body.dark input[type="button"] {
+    background-color: var(--btn-dark);
+    color: var(--text-dark);
+  }
+  input[type="button"]:hover {
+    background-color: var(--btn-hover-light);
+    transform: scale(1.05);
+  }
+  body.dark input[type="button"]:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  .operators input[type="button"] {
+    background-color: var(--green);
+    color: white;
+    margin-bottom: 8px;
+  }
+  .operators input[type="button"]:hover {
+    background-color: var(--green-hover);
+  }
+  .clear-btn {
+    background-color: var(--red);
+    color: white;
+  }
+  .clear-btn:hover {
+    background-color: var(--red-hover);
+  }
+  .memory-btn {
+    background-color: #2196f3;
+    color: white;
+  }
+  .memory-btn:hover {
+    background-color: #1976d2;
+  }
+  .toggle-dark {
+    grid-column: span 2;
+    margin-top: 10px;
+    padding: 10px 0;
+    font-size: 18px;
+    background-color: #555;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  .toggle-dark:hover {
+    background-color: #444;
+  }
+</style>
 </head>
 <body>
   <div class="calculator">
-    <h1>ShubhFusion Calculator</h1>
-    <input type="text" id="result" readonly>
+    <h1>ShubhFusion Calculator Pro</h1>
+    <input type="text" id="result" readonly />
 
-    <div class="buttons">
-      <input type="button" value="7" onclick="add('7')">
-      <input type="button" value="8" onclick="add('8')">
-      <input type="button" value="9" onclick="add('9')">
-      <input type="button" value="/" onclick="add('/')"><br>
-
-      <input type="button" value="4" onclick="add('4')">
-      <input type="button" value="5" onclick="add('5')">
-      <input type="button" value="6" onclick="add('6')">
-      <input type="button" value="*" onclick="add('*')"><br>
-
-      <input type="button" value="1" onclick="add('1')">
-      <input type="button" value="2" onclick="add('2')">
-      <input type="button" value="3" onclick="add('3')">
-      <input type="button" value="-" onclick="add('-')"><br>
-
-      <input type="button" value="0" onclick="add('0')">
-      <input type="button" value="." onclick="add('.')">
-      <input type="button" value="=" onclick="calculate()">
-      <input type="button" value="+" onclick="add('+')"><br>
-
-      <input type="button" value="C" onclick="clearResult()">
+    <div class="numbers">
+      <input type="button" value="7" onclick="add('7')" />
+      <input type="button" value="8" onclick="add('8')" />
+      <input type="button" value="9" onclick="add('9')" />
+      <input type="button" value="4" onclick="add('4')" />
+      <input type="button" value="5" onclick="add('5')" />
+      <input type="button" value="6" onclick="add('6')" />
+      <input type="button" value="1" onclick="add('1')" />
+      <input type="button" value="2" onclick="add('2')" />
+      <input type="button" value="3" onclick="add('3')" />
+      <input type="button" value="0" onclick="add('0')" />
+      <input type="button" value="." onclick="add('.')" />
+      <input type="button" value="%" onclick="percent()" />
     </div>
+
+    <div class="operators">
+      <input type="button" value="C" class="clear-btn" onclick="clearResult()" />
+      <input type="button" value="⌫" onclick="backspace()" />
+      <input type="button" value="÷" onclick="add('/')" />
+      <input type="button" value="×" onclick="add('*')" />
+      <input type="button" value="-" onclick="add('-')" />
+      <input type="button" value="+" onclick="add('+')" />
+      <input type="button" value="sin" onclick="scientific('sin')" />
+      <input type="button" value="cos" onclick="scientific('cos')" />
+      <input type="button" value="log" onclick="scientific('log')" />
+      <input type="button" value="=" onclick="calculate()" />
+    </div>
+
+    <div class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</div>
   </div>
 
-  <script>
-    let result = document.getElementById("result");
-    function add(value) {
+<script>
+  const result = document.getElementById("result");
+  let memory = 0;
+
+  function add(value) {
+    const lastChar = result.value.slice(-1);
+    if (
+      ["+", "-", "*", "/", "%", "."].includes(value) &&
+      ["+", "-", "*", "/", "%", "."].includes(lastChar)
+    ) {
+      result.value = result.value.slice(0, -1) + value;
+    } else {
       result.value += value;
     }
-    function calculate() {
-      try {
-        result.value = eval(result.value);
-      } catch {
-        result.value = "Error";
+  }
+
+  function calculate() {
+    try {
+      let expr = result.value.replace(/÷/g, "/").replace(/×/g, "*");
+      let answer = eval(expr);
+      result.value = answer;
+    } catch {
+      result.value = "Error";
+    }
+  }
+
+  function clearResult() {
+    result.value = "";
+  }
+
+  function backspace() {
+    result.value = result.value.slice(0, -1);
+  }
+
+  function percent() {
+    try {
+      let val = parseFloat(result.value);
+      if (!isNaN(val)) {
+        result.value = val / 100;
       }
+    } catch {
+      result.value = "Error";
     }
-    function clearResult() {
-      result.value = "";
+  }
+
+  // Scientific functions
+  function scientific(fn) {
+    try {
+      let val = parseFloat(result.value);
+      if (isNaN(val)) {
+        result.value = "Error";
+        return;
+      }
+      let res;
+      switch(fn) {
+        case 'sin': res = Math.sin(val); break;
+        case 'cos': res = Math.cos(val); break;
+        case 'log': res = Math.log10(val); break;
+      }
+      result.value = res.toFixed(6); // Limit decimals
+    } catch {
+      result.value = "Error";
     }
-  </script>
+  }
+
+  // Memory functions
+  function memoryAdd() {
+    let val = parseFloat(result.value);
+    if (!isNaN(val)) memory += val;
+  }
+  function memorySubtract() {
+    let val = parseFloat(result.value);
+    if (!isNaN(val)) memory -= val;
+  }
+  function memoryRecall() {
+    result.value = memory;
+  }
+
+  // Dark mode toggle
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+  }
+
+  // Keyboard support
+  document.addEventListener('keydown', (e) => {
+    if ((e.key >= '0' && e.key <= '9') || ['+', '-', '*', '/', '.', '%'].includes(e.key)) {
+      add(e.key);
+    } else if (e.key === 'Enter') {
+      calculate();
+    } else if (e.key === 'Backspace') {
+      backspace();
+    } else if (e.key.toLowerCase() === 'c') {
+      clearResult();
+    }
+  });
+</script>
 </body>
 </html>
