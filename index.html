@@ -1,286 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ShubhFusion Calculator Pro</title>
-<style>
-  :root {
-    --bg-light: #f0f4ff;
-    --bg-dark: #121212;
-    --calc-bg-light: #fff;
-    --calc-bg-dark: #1e1e1e;
-    --text-light: #333;
-    --text-dark: #eee;
-    --btn-light: #f1f3f4;
-    --btn-dark: #333;
-    --btn-hover-light: #dde1e4;
-    --btn-hover-dark: #444;
-    --green: #4caf50;
-    --green-hover: #45a049;
-    --red: #f44336;
-    --red-hover: #e53935;
-  }
-  body {
-    background: var(--bg-light);
-    color: var(--text-light);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    transition: background 0.3s, color 0.3s;
-  }
-  body.dark {
-    background: var(--bg-dark);
-    color: var(--text-dark);
-  }
-  .calculator {
-    background: var(--calc-bg-light);
-    border-radius: 16px;
-    padding: 30px 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    width: 340px;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 15px;
-    transition: background 0.3s;
-  }
-  body.dark .calculator {
-    background: var(--calc-bg-dark);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-  }
-  h1 {
-    grid-column: span 2;
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-  #result {
-    grid-column: span 2;
-    width: 100%;
-    height: 50px;
-    font-size: 24px;
-    margin-bottom: 20px;
-    padding: 10px;
-    text-align: right;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    user-select: none;
-    background: transparent;
-    color: inherit;
-    transition: border-color 0.3s;
-  }
-  body.dark #result {
-    border-color: #555;
-  }
-  .numbers {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 60px);
-    gap: 12px;
-  }
-  .operators {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: 60px;
-    gap: 12px;
-  }
-  input[type="button"] {
-    width: 100%;
-    height: 60px;
-    font-size: 22px;
-    font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    background-color: var(--btn-light);
-    color: var(--text-light);
-    transition: background 0.3s, color 0.3s, transform 0.2s;
-    user-select: none;
-  }
-  body.dark input[type="button"] {
-    background-color: var(--btn-dark);
-    color: var(--text-dark);
-  }
-  input[type="button"]:hover {
-    background-color: var(--btn-hover-light);
-    transform: scale(1.05);
-  }
-  body.dark input[type="button"]:hover {
-    background-color: var(--btn-hover-dark);
-  }
-  .operators input[type="button"] {
-    background-color: var(--green);
-    color: white;
-    margin-bottom: 8px;
-  }
-  .operators input[type="button"]:hover {
-    background-color: var(--green-hover);
-  }
-  .clear-btn {
-    background-color: var(--red);
-    color: white;
-  }
-  .clear-btn:hover {
-    background-color: var(--red-hover);
-  }
-  .memory-btn {
-    background-color: #2196f3;
-    color: white;
-  }
-  .memory-btn:hover {
-    background-color: #1976d2;
-  }
-  .toggle-dark {
-    grid-column: span 2;
-    margin-top: 10px;
-    padding: 10px 0;
-    font-size: 18px;
-    background-color: #555;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s;
-  }
-  .toggle-dark:hover {
-    background-color: #444;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShubhFusion Calculator by Shubham Sapkal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #dfe9f3, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    .container {
+      display: flex;
+      flex: 1;
+    }
+    .calculator-section {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .calculator {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 20px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .result {
+      grid-column: span 2;
+      margin-bottom: 15px;
+    }
+    #result {
+      width: 100%;
+      height: 60px;
+      font-size: 24px;
+      text-align: right;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+    .numbers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .operators {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    input[type="button"] {
+      height: 60px;
+      font-size: 22px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background: #f1f3f4;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    input[type="button"]:hover {
+      background: #dde1e4;
+      transform: scale(1.05);
+    }
+    .operators input {
+      background: #4caf50;
+      color: white;
+    }
+    .operators input:hover {
+      background: #43a047;
+    }
+    .formulas-section {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #f7f9fc;
+      border-left: 2px solid #ccc;
+    }
+    .formula {
+      background: #fff;
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-left: 5px solid #4a90e2;
+      font-size: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    footer {
+      background: #4a90e2;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <div class="calculator">
-    <h1>ShubhFusion Calculator Pro</h1>
-    <input type="text" id="result" readonly />
-
-    <div class="numbers">
-      <input type="button" value="7" onclick="add('7')" />
-      <input type="button" value="8" onclick="add('8')" />
-      <input type="button" value="9" onclick="add('9')" />
-      <input type="button" value="4" onclick="add('4')" />
-      <input type="button" value="5" onclick="add('5')" />
-      <input type="button" value="6" onclick="add('6')" />
-      <input type="button" value="1" onclick="add('1')" />
-      <input type="button" value="2" onclick="add('2')" />
-      <input type="button" value="3" onclick="add('3')" />
-      <input type="button" value="0" onclick="add('0')" />
-      <input type="button" value="." onclick="add('.')" />
-      <input type="button" value="%" onclick="percent()" />
+  <header>ShubhFusion Calculator by Shubham Sapkal</header>
+  <div class="container">
+    <div class="calculator-section">
+      <div class="calculator">
+        <div class="result">
+          <input type="text" id="result" readonly />
+        </div>
+        <div class="numbers">
+          <input type="button" value="7" onclick="add('7')">
+          <input type="button" value="8" onclick="add('8')">
+          <input type="button" value="9" onclick="add('9')">
+          <input type="button" value="4" onclick="add('4')">
+          <input type="button" value="5" onclick="add('5')">
+          <input type="button" value="6" onclick="add('6')">
+          <input type="button" value="1" onclick="add('1')">
+          <input type="button" value="2" onclick="add('2')">
+          <input type="button" value="3" onclick="add('3')">
+          <input type="button" value="0" onclick="add('0')">
+          <input type="button" value="." onclick="add('.')">
+          <input type="button" value="C" onclick="clearResult()">
+        </div>
+        <div class="operators">
+          <input type="button" value="+" onclick="add('+')">
+          <input type="button" value="-" onclick="add('-')">
+          <input type="button" value="×" onclick="add('*')">
+          <input type="button" value="÷" onclick="add('/')">
+          <input type="button" value="⌫" onclick="backspace()">
+          <input type="button" value="=" onclick="calculate()">
+        </div>
+      </div>
     </div>
-
-    <div class="operators">
-      <input type="button" value="C" class="clear-btn" onclick="clearResult()" />
-      <input type="button" value="⌫" onclick="backspace()" />
-      <input type="button" value="÷" onclick="add('/')" />
-      <input type="button" value="×" onclick="add('*')" />
-      <input type="button" value="-" onclick="add('-')" />
-      <input type="button" value="+" onclick="add('+')" />
-      <input type="button" value="sin" onclick="scientific('sin')" />
-      <input type="button" value="cos" onclick="scientific('cos')" />
-      <input type="button" value="log" onclick="scientific('log')" />
-      <input type="button" value="=" onclick="calculate()" />
+    <div class="formulas-section">
+      <div class="formula">a² + b² = c²</div>
+      <div class="formula">E = mc²</div>
+      <div class="formula">π ≈ 3.1416</div>
+      <div class="formula">sin²θ + cos²θ = 1</div>
+      <div class="formula">Δ = b² - 4ac</div>
+      <div class="formula">x = (-b ± √Δ)/2a</div>
     </div>
-
-    <div class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</div>
   </div>
+  <footer>
+    © 2025 ShubhFusion | Designed by Shubham Sapkal
+  </footer>
 
-<script>
-  const result = document.getElementById("result");
-  let memory = 0;
+  <script>
+    const result = document.getElementById("result");
 
-  function add(value) {
-    const lastChar = result.value.slice(-1);
-    if (
-      ["+", "-", "*", "/", "%", "."].includes(value) &&
-      ["+", "-", "*", "/", "%", "."].includes(lastChar)
-    ) {
-      result.value = result.value.slice(0, -1) + value;
-    } else {
+    function add(value) {
       result.value += value;
     }
-  }
 
-  function calculate() {
-    try {
-      let expr = result.value.replace(/÷/g, "/").replace(/×/g, "*");
-      let answer = eval(expr);
-      result.value = answer;
-    } catch {
-      result.value = "Error";
-    }
-  }
-
-  function clearResult() {
-    result.value = "";
-  }
-
-  function backspace() {
-    result.value = result.value.slice(0, -1);
-  }
-
-  function percent() {
-    try {
-      let val = parseFloat(result.value);
-      if (!isNaN(val)) {
-        result.value = val / 100;
-      }
-    } catch {
-      result.value = "Error";
-    }
-  }
-
-  // Scientific functions
-  function scientific(fn) {
-    try {
-      let val = parseFloat(result.value);
-      if (isNaN(val)) {
+    function calculate() {
+      try {
+        result.value = eval(result.value.replace(/×/g, '*').replace(/÷/g, '/'));
+      } catch {
         result.value = "Error";
-        return;
       }
-      let res;
-      switch(fn) {
-        case 'sin': res = Math.sin(val); break;
-        case 'cos': res = Math.cos(val); break;
-        case 'log': res = Math.log10(val); break;
-      }
-      result.value = res.toFixed(6);
-    } catch {
-      result.value = "Error";
     }
-  }
 
-  // Memory functions (for later visual buttons)
-  function memoryAdd() {
-    let val = parseFloat(result.value);
-    if (!isNaN(val)) memory += val;
-  }
-  function memorySubtract() {
-    let val = parseFloat(result.value);
-    if (!isNaN(val)) memory -= val;
-  }
-  function memoryRecall() {
-    result.value = memory;
-  }
-
-  // Dark mode toggle
-  function toggleDarkMode() {
-    document.body.classList.toggle("dark");
-  }
-
-  // Keyboard support
-  document.addEventListener('keydown', (e) => {
-    if ((e.key >= '0' && e.key <= '9') || ['+', '-', '*', '/', '.', '%'].includes(e.key)) {
-      add(e.key);
-    } else if (e.key === 'Enter') {
-      calculate();
-    } else if (e.key === 'Backspace') {
-      backspace();
-    } else if (e.key.toLowerCase() === 'c') {
-      clearResult();
+    function clearResult() {
+      result.value = "";
     }
-  });
-</script>
+
+    function backspace() {
+      result.value = result.value.slice(0, -1);
+    }
+  </script>
 </body>
 </html>
